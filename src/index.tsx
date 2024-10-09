@@ -8,6 +8,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App places_count={100}/>
+    <App placesCount={100}/>
   </React.StrictMode>
 );
