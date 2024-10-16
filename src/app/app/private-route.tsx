@@ -1,9 +1,8 @@
-import React from 'react';
+import { PropsWithChildren } from 'react';
 import { Navigate } from 'react-router-dom';
 
-interface PrivateRouteProps {
+interface PrivateRouteProps extends PropsWithChildren {
   isAuthorized: boolean;
-  children: React.JSX.Element;
 }
 
 export default function PrivateRoute(props: PrivateRouteProps) {
