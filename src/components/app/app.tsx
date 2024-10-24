@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Path } from '../../enums/path.ts';
 
 import MainPage from '../../pages/main/main-page.tsx';
 import LoginPage from '../../pages/login/login-page.tsx';
@@ -13,17 +14,17 @@ export default function App(props: { placesCount: number }) {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainPage placesCount={props.placesCount} />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path={Path.MainPage} element={<MainPage placesCount={props.placesCount} />} />
+        <Route path={Path.LoginPage} element={<LoginPage />} />
         <Route
-          path="/favourites"
+          path={Path.FavoritePage}
           element={
             <PrivateRoute isAuthorized={isAuthorized}>
               <FavouritesPage />
             </PrivateRoute>
           }
         />
-        <Route path="/offer/:id" element={<OfferPage />} />
+        <Route path={Path.OfferPage} element={<OfferPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
