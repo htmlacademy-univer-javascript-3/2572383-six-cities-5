@@ -1,4 +1,3 @@
-import Header from '../layouts/header.tsx';
 import {useParams} from 'react-router-dom';
 import getMockOfferById from '../../mocks/offers.ts';
 import OfferPageGallery from './offer-page-gallery.tsx';
@@ -14,6 +13,7 @@ import {OfferPageReviewList} from './offer-page-review-list.tsx';
 import {OfferPageReviewForm} from './offer-page-review-form.tsx';
 import NotFoundPage from '../404/notfound-page.tsx';
 import {OfferPageNearPlaces} from './offer-page-near-places.tsx';
+import HeaderWithNav from '../layouts/header/header-with-nav.tsx';
 
 
 export default function OfferPage() {
@@ -37,13 +37,13 @@ export default function OfferPage() {
       <title>6 cities: offer</title>
       <link rel="stylesheet" href="css/main.css"/>
       <div className="page">
-        <Header isHeaderNavVisible/>
+        <HeaderWithNav/>
         <main className="page__main page__main--offer">
           <section className="offer">
             <OfferPageGallery images={offer.images}/>
             <div className="offer__container container">
               <div className="offer__wrapper">
-                <Mark mark={offer.mark} className='offer__mark'/>
+                {offer.mark ? <Mark mark={offer.mark} className='offer__mark'/> : null}
                 <div className="offer__name-wrapper">
                   <h1 className="offer__name">
                     {offer.name}

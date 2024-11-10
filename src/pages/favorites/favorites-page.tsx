@@ -1,7 +1,7 @@
 import {Offer} from '../../types/offer.ts';
 import PlaceCardList from '../../components/cards_list/place-card-list.tsx';
 import {CardType} from '../../components/cards/card-type.ts';
-import Header from '../layouts/header.tsx';
+import HeaderWithNav from '../layouts/header/header-with-nav.tsx';
 
 export default function FavoritesPage(props: {offers: Offer[]}) {
   return (
@@ -12,7 +12,7 @@ export default function FavoritesPage(props: {offers: Offer[]}) {
       <title>6 cities: favorites</title>
       <link rel="stylesheet" href="css/main.css" />
       <div className="page">
-        <Header isHeaderNavVisible/>
+        <HeaderWithNav/>
         <main className="page__main page__main--favorites">
           <div className="page__favorites-container container">
             <section className="favorites">

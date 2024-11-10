@@ -1,4 +1,4 @@
-import Header from '../layouts/header.tsx';
+import Header from '../layouts/header/header.tsx';
 
 export default function LoginPage() {
   return (
@@ -9,7 +9,7 @@ export default function LoginPage() {
       <title>6 cities: authorization</title>
       <link rel="stylesheet" href="css/main.css" />
       <div className="page page--gray page--login">
-        <Header isHeaderNavVisible={false}/>
+        <Header/>
         <main className="page__main page__main--login">
           <div className="page__login-container container">
             <section className="login">

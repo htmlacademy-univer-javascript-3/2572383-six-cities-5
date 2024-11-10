@@ -8,6 +8,14 @@ interface StarRatingInputProps {
   checked: boolean;
 }
 
+const StarInputTitles: Record<number, string> = {
+  5: 'perfect',
+  4: 'good',
+  3: 'not bad',
+  2: 'badly',
+  1: 'terribly'
+};
+
 function StarRatingInput(props: StarRatingInputProps) {
   return (
     <>
@@ -37,12 +45,12 @@ export function OfferPageReviewForm() {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
 
-  const handleRatingChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRating(Number(event.target.value));
+  const handleRatingChange = (value: string) => {
+    setRating(Number(value));
   };
 
-  const handleReviewChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setReview(event.target.value);
+  const handleReviewChange = (value: string) => {
+    setReview(value);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -55,11 +63,15 @@ export function OfferPageReviewForm() {
         Your review
       </label>
       <div className="reviews__rating-form form__rating">
-        <StarRatingInput value={5} title="perfect" onChange={handleRatingChange} checked={rating === 5}/>
-        <StarRatingInput value={4} title="good" onChange={handleRatingChange} checked={rating === 4}/>
-        <StarRatingInput value={3} title="not bad" onChange={handleRatingChange} checked={rating === 3}/>
-        <StarRatingInput value={2} title="badly" onChange={handleRatingChange} checked={rating === 2}/>
-        <StarRatingInput value={1} title="terribly" onChange={handleRatingChange} checked={rating === 1}/>
+        {Object.entries(StarInputTitles).map(([value, title]) => (
+          <StarRatingInput
+            key={value}
+            value={Number(value)}
+            title={title}
+            onChange={(event) => handleRatingChange(event.target.value)}
+            checked={rating === Number(value)}
+          />
+        ))}
       </div>
       <textarea
         className="reviews__textarea form__textarea"
@@ -67,7 +79,7 @@ export function OfferPageReviewForm() {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={review}
-        onChange={handleReviewChange}
+        onChange={(event) => handleReviewChange(event.target.value)}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">

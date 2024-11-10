@@ -208,13 +208,6 @@ export const mockOffers: Offer[] = [
   }
 ];
 
-export default function getMockOfferById(id: string): Offer | null {
-  for (const mockOffer of mockOffers) {
-    if (mockOffer.id === id) {
-      return mockOffer;
-    }
-  }
-
-  return null;
+export default function getMockOfferById(id: string): Offer | undefined {
+  return mockOffers.find((offer) => offer.id === id);
 }
-

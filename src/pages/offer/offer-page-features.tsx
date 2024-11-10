@@ -3,7 +3,7 @@ import getCorrespondingOfferFeatureClassName from '../../utils/get-corresponding
 
 function OfferFeature(props: { feature: Feature }) {
   return (
-    <li className={getCorrespondingOfferFeatureClassName(props.feature.type)}>
+    <li className={`offer__feature ${getCorrespondingOfferFeatureClassName(props.feature.type)}`}>
       {props.feature.name}
     </li>
   );

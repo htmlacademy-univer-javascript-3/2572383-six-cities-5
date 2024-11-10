@@ -1,8 +1,8 @@
 import PlaceCardList from '../../components/cards_list/place-card-list.tsx';
 import {Offer} from '../../types/offer.ts';
 import {CardType} from '../../components/cards/card-type.ts';
-import Header from '../layouts/header.tsx';
 import {LocationsContainer} from './locations-container.tsx';
+import HeaderWithNav from '../layouts/header/header-with-nav.tsx';
 
 export default function MainPage(props: {offers: Offer[]}) {
   return (
@@ -13,7 +13,7 @@ export default function MainPage(props: {offers: Offer[]}) {
       <title>6 cities</title>
       <link rel="stylesheet" href="css/main.css"/>
       <div className="page page--gray page--main">
-        <Header isHeaderNavVisible/>
+        <HeaderWithNav/>
         <main className="page__main page__main--index">
           <h1 className="visually-hidden">Cities</h1>
           <div className="tabs">
