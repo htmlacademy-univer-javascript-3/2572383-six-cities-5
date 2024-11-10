@@ -1,5 +1,10 @@
+import HeaderWithNav from '../layouts/header/header-with-nav.tsx';
+
 export default function NotFoundPage() {
   return (
-    <p>404 not found</p>
+    <>
+      <HeaderWithNav/>
+      <p>404 not found</p>
+    </>
   );
 }
