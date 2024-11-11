@@ -1,5 +1,6 @@
 import {Offer} from '../types/offer.ts';
 import {FeatureType} from '../enums/feature-type.ts';
+import {City} from '../types/city.ts';
 
 export const mockOffers: Offer[] = [
   {
@@ -8,6 +9,13 @@ export const mockOffers: Offer[] = [
     images: ['img/apartment-02.jpg'],
     name: 'Big House',
     price: 120,
+    location: {
+      title: 'Amsterdam',
+      coordinates: {
+        lat: 52.3909553943508,
+        lng: 4.85309666406198
+      }
+    },
     features: [
       {
         type: FeatureType.Entire,
@@ -68,6 +76,13 @@ export const mockOffers: Offer[] = [
     ],
     type: 'Apartment',
     price: 80,
+    location: {
+      title: 'Amsterdam',
+      coordinates: {
+        lat: 52.3609553943508,
+        lng: 4.85309666406198
+      }
+    },
     insideItems: ['Wi-Fi', 'Air Conditioning', 'Coffee Maker'],
     host: {
       firstname: 'Sara',
@@ -124,6 +139,13 @@ export const mockOffers: Offer[] = [
     ],
     type: 'Villa',
     price: 250,
+    location: {
+      title: 'Amsterdam',
+      coordinates: {
+        lat: 52.3909553943508,
+        lng: 4.929309666406198
+      }
+    },
     insideItems: ['Private Pool', 'Outdoor Kitchen', 'Wi-Fi'],
     host: {
       firstname: 'Michael',
@@ -169,6 +191,13 @@ export const mockOffers: Offer[] = [
     ],
     type: 'Cabin',
     price: 150,
+    location: {
+      title: 'Amsterdam',
+      coordinates: {
+        lat: 52.3809553943508,
+        lng: 4.939309666406198
+      }
+    },
     insideItems: ['Fireplace', 'Hot Tub', 'BBQ Grill'],
     host: {
       firstname: 'David',
@@ -211,3 +240,12 @@ export const mockOffers: Offer[] = [
 export default function getMockOfferById(id: string): Offer | undefined {
   return mockOffers.find((offer) => offer.id === id);
 }
+
+export const AMSTERDAM_CITY: City = {
+  coordinates: {
+    lat: 52.3909553943508,
+    lng: 4.85309666406198
+  },
+  zoom: 20,
+  title: 'Amsterdam'
+};
