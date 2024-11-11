@@ -3,8 +3,12 @@ import {Offer} from '../../types/offer.ts';
 import {CardType} from '../../components/cards/card-type.ts';
 import {LocationsContainer} from './locations-container.tsx';
 import HeaderWithNav from '../layouts/header/header-with-nav.tsx';
+import Map from '../../components/map/map.tsx';
+import {AMSTERDAM_CITY} from '../../mocks/offers.ts';
 
 export default function MainPage(props: {offers: Offer[]}) {
+  const points = props.offers.map((offer) => offer.location);
+
   return (
     <>
       <meta charSet="utf-8"/>
@@ -55,7 +59,9 @@ export default function MainPage(props: {offers: Offer[]}) {
                 </div>
               </section>
               <div className="cities__right-section">
-                <section className="cities__map map"/>
+                <section className="cities__map map">
+                  <Map city={AMSTERDAM_CITY} points={points} selectedPoint={undefined}/>
+                </section>
               </div>
             </div>
           </div>
