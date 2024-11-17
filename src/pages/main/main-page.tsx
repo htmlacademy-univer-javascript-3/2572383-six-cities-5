@@ -59,7 +59,9 @@ export default function MainPage(props: {offers: Offer[]}) {
                 </div>
               </section>
               <div className="cities__right-section">
-                <Map city={AMSTERDAM_CITY} points={points} selectedPoint={undefined}/>
+                <section className="cities__map map">
+                  <Map city={AMSTERDAM_CITY} points={points} selectedPoint={undefined}/>
+                </section>
               </div>
             </div>
           </div>

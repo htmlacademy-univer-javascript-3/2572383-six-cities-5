@@ -14,13 +14,13 @@ type MapProps = {
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_PIN_DEFAULT,
-  iconSize: [40, 40],
+  iconSize: [27, 39],
   iconAnchor: [20, 40]
 });
 
 const currentCustomIcon = new Icon({
   iconUrl: URL_PIN_ACTIVE,
-  iconSize: [40, 40],
+  iconSize: [27, 39],
   iconAnchor: [20, 40]
 });
 
@@ -54,5 +54,5 @@ export default function Map(props: MapProps) {
     }
   }, [map, points, selectedPoint]);
 
-  return <section className="cities__map map" ref={mapRef}/>;
+  return <div style={{ height: '100%' }} ref={mapRef}></div>;
 }
