@@ -1,5 +1,5 @@
 import {useParams} from 'react-router-dom';
-import getMockOfferById from '../../mocks/offers.ts';
+import getMockOfferById, {AMSTERDAM_CITY, mockOffers} from '../../mocks/offers.ts';
 import OfferPageGallery from './offer-page-gallery.tsx';
 import {getReviewsAverageRating} from '../../utils/get-reviews-average-rating.ts';
 import {OfferPrice} from './offer-price.tsx';
@@ -14,6 +14,7 @@ import {OfferPageReviewForm} from './offer-page-review-form.tsx';
 import NotFoundPage from '../404/notfound-page.tsx';
 import {OfferPageNearPlaces} from './offer-page-near-places.tsx';
 import HeaderWithNav from '../layouts/header/header-with-nav.tsx';
+import Map from '../../components/map/map.tsx';
 
 
 export default function OfferPage() {
@@ -28,6 +29,7 @@ export default function OfferPage() {
   }
 
   const reviewsAverageRating = getReviewsAverageRating(offer.reviews);
+  const neighbourhoodPlaces = mockOffers.filter((val) => val.id !== id);
 
   return (
     <>
@@ -78,10 +80,12 @@ export default function OfferPage() {
                 </section>
               </div>
             </div>
-            <section className="offer__map map"/>
+            <section className="offer__map map">
+              <Map city={AMSTERDAM_CITY} points={neighbourhoodPlaces.map((place) => place.location)} selectedPoint={undefined}/>
+            </section>
           </section>
           <div className="container">
-            <OfferPageNearPlaces/>
+            {<OfferPageNearPlaces offers={neighbourhoodPlaces}/>}
           </div>
         </main>
       </div>

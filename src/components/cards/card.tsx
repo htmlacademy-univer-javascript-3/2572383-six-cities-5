@@ -15,10 +15,10 @@ interface CardProps {
 
 export default function Card(props: CardProps) {
   return (
-    <article onPointerOver={props.onPointerOver} className={`${props.type === CardType.MainPage ? 'cities' : 'favorites'}__card place-card`}>
+    <article onPointerOver={props.onPointerOver} className={`${props.type}__card place-card`}>
       {props.offer.mark ? <Mark mark={props.offer.mark} className='place-card__mark'/> : null}
       <CardImageWrapper cardType={props.type} imgSrc={props.offer.images[0]}/>
-      <div className={`${props.type === CardType.MainPage ? '' : 'favorites__card-info '}place-card__info`}>
+      <div className={`${props.type === CardType.FavoritesPage ? 'favorites__card-info ' : ''}place-card__info`}>
         <CardPriceWrapper offer={props.offer} isBookmarked={props.type === CardType.FavoritesPage}/>
         <Rating wrapperClass={'place-card__rating'} starsClass={'place-card__stars'} averageRating={getReviewsAverageRating(props.offer.reviews)}/>
         <CardName offer={props.offer}/>
