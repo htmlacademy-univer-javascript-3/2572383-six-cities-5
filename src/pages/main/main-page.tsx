@@ -1,13 +1,16 @@
 import PlaceCardList from '../../components/cards_list/place-card-list.tsx';
-import {Offer} from '../../types/offer.ts';
 import {CardType} from '../../components/cards/card-type.ts';
 import {LocationsContainer} from './locations-container.tsx';
 import HeaderWithNav from '../layouts/header/header-with-nav.tsx';
 import Map from '../../components/map/map.tsx';
-import {AMSTERDAM_CITY} from '../../mocks/offers.ts';
+import {CITIES_LIST} from '../../const.ts';
+import {useAppSelector} from '../../store';
 
-export default function MainPage(props: {offers: Offer[]}) {
-  const points = props.offers.map((offer) => offer.location);
+export default function MainPage() {
+  const activeCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.offers).filter((offer) => offer.location.title === activeCity);
+
+  const points = offers.map((offer) => offer.location);
 
   return (
     <>
@@ -21,13 +24,13 @@ export default function MainPage(props: {offers: Offer[]}) {
         <main className="page__main page__main--index">
           <h1 className="visually-hidden">Cities</h1>
           <div className="tabs">
-            <LocationsContainer/>
+            <LocationsContainer cities={CITIES_LIST}/>
           </div>
           <div className="cities">
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{props.offers.length} places to stay in Amsterdam</b>
+                <b className="places__found">{offers.length} places to stay in {activeCity}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>
                   <span className="places__sorting-type" tabIndex={0}>
@@ -55,12 +58,12 @@ export default function MainPage(props: {offers: Offer[]}) {
                   </ul>
                 </form>
                 <div className="cities__places-list places__list tabs__content">
-                  <PlaceCardList offers={props.offers} cardType={CardType.MainPage}/>
+                  <PlaceCardList offers={offers} cardType={CardType.MainPage}/>
                 </div>
               </section>
               <div className="cities__right-section">
                 <section className="cities__map map">
-                  <Map city={AMSTERDAM_CITY} points={points} selectedPoint={undefined}/>
+                  <Map points={points} selectedPoint={undefined}/>
                 </section>
               </div>
             </div>

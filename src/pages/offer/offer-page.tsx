@@ -1,5 +1,5 @@
 import {useParams} from 'react-router-dom';
-import getMockOfferById, {AMSTERDAM_CITY, mockOffers} from '../../mocks/offers.ts';
+import {AMSTERDAM_CITY, getMockOfferById, mockOffers} from '../../mocks/offers.ts';
 import OfferPageGallery from './offer-page-gallery.tsx';
 import {getReviewsAverageRating} from '../../utils/get-reviews-average-rating.ts';
 import {OfferPrice} from './offer-price.tsx';

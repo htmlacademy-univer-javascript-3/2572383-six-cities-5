@@ -1,5 +1,3 @@
-import {Point} from './point.ts';
+import {CITIES_LIST} from '../const.ts';
 
-export interface City extends Point {
-  zoom: number;
-}
+export type City = typeof CITIES_LIST[number];

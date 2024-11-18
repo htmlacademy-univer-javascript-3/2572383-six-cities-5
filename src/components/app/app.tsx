@@ -15,7 +15,7 @@ export default function App(props: {offers: Offer[]}) {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={Path.MainPage} element={<MainPage offers={props.offers}/>} />
+        <Route path={Path.MainPage} element={<MainPage />} />
         <Route path={Path.LoginPage} element={<LoginPage />} />
         <Route
           path={Path.FavoritePage}

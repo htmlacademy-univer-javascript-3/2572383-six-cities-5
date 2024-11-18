@@ -1,6 +1,6 @@
 import {Offer} from '../types/offer.ts';
 import {FeatureType} from '../enums/feature-type.ts';
-import {City} from '../types/city.ts';
+import {CityPoint} from '../types/city-point.ts';
 
 export const mockOffers: Offer[] = [
   {
@@ -10,10 +10,10 @@ export const mockOffers: Offer[] = [
     name: 'Big House',
     price: 120,
     location: {
-      title: 'Amsterdam',
+      title: 'Paris',
       coordinates: {
-        lat: 52.3909553943508,
-        lng: 4.85309666406198
+        lat: 48.864716,
+        lng: 2.369114
       }
     },
     features: [
@@ -192,10 +192,10 @@ export const mockOffers: Offer[] = [
     type: 'Cabin',
     price: 150,
     location: {
-      title: 'Amsterdam',
+      title: 'Paris',
       coordinates: {
-        lat: 52.3809553943508,
-        lng: 4.939309666406198
+        lat: 48.864716,
+        lng: 2.349014
       }
     },
     insideItems: ['Fireplace', 'Hot Tub', 'BBQ Grill'],
@@ -237,15 +237,75 @@ export const mockOffers: Offer[] = [
   }
 ];
 
-export default function getMockOfferById(id: string): Offer | undefined {
-  return mockOffers.find((offer) => offer.id === id);
-}
-
-export const AMSTERDAM_CITY: City = {
+export const AMSTERDAM_CITY: CityPoint = {
   coordinates: {
     lat: 52.3909553943508,
     lng: 4.85309666406198
   },
   zoom: 20,
-  title: 'Amsterdam'
+  title: 'Amsterdam',
+} as const;
+
+
+export const PARIS_CITY: CityPoint = {
+  coordinates: {
+    lat: 48.864716,
+    lng: 2.349014
+  },
+  zoom: 20,
+  title: 'Paris',
 };
+
+export const COLOGNE_CITY: CityPoint = {
+  coordinates: {
+    lat: 50.937531,
+    lng: 6.960279
+  },
+  zoom: 20,
+  title: 'Cologne',
+} as const;
+
+export const BRUSSELS_CITY: CityPoint = {
+  coordinates: {
+    lat: 50.85045,
+    lng: 4.34878
+  },
+  zoom: 20,
+  title: 'Brussels',
+} as const;
+
+export const HAMBURG_CITY: CityPoint = {
+  coordinates: {
+    lat: 53.551086,
+    lng: 9.993682
+  },
+  zoom: 20,
+  title: 'Hamburg',
+} as const;
+
+export const DUSSELDORF_CITY: CityPoint = {
+  coordinates: {
+    lat: 51.227741,
+    lng: 6.773456
+  },
+  zoom: 20,
+  title: 'Dusseldorf',
+} as const;
+
+export const cityPoints: Record<string, CityPoint> = {
+  'Amsterdam': AMSTERDAM_CITY,
+  'Paris': PARIS_CITY,
+  'Cologne': COLOGNE_CITY,
+  'Brussels': BRUSSELS_CITY,
+  'Hamburg': HAMBURG_CITY,
+  'Dusseldorf': DUSSELDORF_CITY
+};
+
+
+export function getMockOfferById(id: string): Offer | undefined {
+  return mockOffers.find((offer) => offer.id === id);
+}
+
+export function getMockOffersByCity(city: string): Offer[] | undefined {
+  return mockOffers.filter((offer) => offer.location.title === city);
+}
