@@ -1,5 +1,5 @@
 import {useParams} from 'react-router-dom';
-import {AMSTERDAM_CITY, getMockOfferById, mockOffers} from '../../mocks/offers.ts';
+import {getMockOfferById, mockOffers} from '../../mocks/offers.ts';
 import OfferPageGallery from './offer-page-gallery.tsx';
 import {getReviewsAverageRating} from '../../utils/get-reviews-average-rating.ts';
 import {OfferPrice} from './offer-price.tsx';
@@ -81,7 +81,7 @@ export default function OfferPage() {
               </div>
             </div>
             <section className="offer__map map">
-              <Map city={AMSTERDAM_CITY} points={neighbourhoodPlaces.map((place) => place.location)} selectedPoint={undefined}/>
+              <Map points={neighbourhoodPlaces.map((place) => place.location)}/>
             </section>
           </section>
           <div className="container">
