@@ -81,7 +81,7 @@ export default function OfferPage() {
               </div>
             </div>
             <section className="offer__map map">
-              <Map points={neighbourhoodPlaces.map((place) => place.location)} selectedPoint={undefined}/>
+              <Map points={neighbourhoodPlaces.map((place) => place.location)}/>
             </section>
           </section>
           <div className="container">
