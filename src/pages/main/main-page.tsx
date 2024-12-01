@@ -3,13 +3,13 @@ import {CardType} from '../../components/cards/card-type.ts';
 import {LocationsContainer} from '../../components/location-container/locations-container.tsx';
 import HeaderWithNav from '../layouts/header/header-with-nav.tsx';
 import Map from '../../components/map/map.tsx';
-import {CITIES_LIST} from '../../const.ts';
 import {useAppSelector} from '../../store';
 import {SortTypeDropSelector} from '../../components/sort-type/sort-type-drop-selector.tsx';
+import {getSortedOffers} from '../../utils/sort-offers.ts';
 
 export default function MainPage() {
   const activeCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offers).filter((offer) => offer.location.title === activeCity);
+  const offers = useAppSelector(getSortedOffers).filter((offer) => offer.location.title === activeCity);
 
   const points = offers.map((offer) => offer.location);
 
@@ -25,7 +25,7 @@ export default function MainPage() {
         <main className="page__main page__main--index">
           <h1 className="visually-hidden">Cities</h1>
           <div className="tabs">
-            <LocationsContainer cities={CITIES_LIST}/>
+            <LocationsContainer/>
           </div>
           <div className="cities">
             <div className="cities__places-container container">
