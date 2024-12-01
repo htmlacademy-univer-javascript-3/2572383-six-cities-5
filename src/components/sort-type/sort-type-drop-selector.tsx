@@ -14,7 +14,6 @@ export function SortTypeDropSelector() {
     setIsOpen(false);
   };
 
-  // Норм ли я использую SortType enum?
   return (
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by </span>
