@@ -1,10 +1,11 @@
 import {City} from '../../types/city.ts';
 import {useAppDispatch, useAppSelector} from '../../store';
 import {setCity} from '../../store/slice.ts';
+import {CITIES_LIST} from '../../const.ts';
 
 
-export function LocationsContainer(props: {cities: ReadonlyArray<City>}) {
-  const {cities} = props;
+export function LocationsContainer() {
+  const cities = CITIES_LIST;
   const dispatch = useAppDispatch();
   const activeCity = useAppSelector((state) => state.city);
 
