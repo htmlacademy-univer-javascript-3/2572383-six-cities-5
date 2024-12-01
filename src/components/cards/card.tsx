@@ -6,23 +6,27 @@ import {CardName} from './name/card-name.tsx';
 import {Mark} from '../mark/mark.tsx';
 import {CardPriceWrapper} from './price-wrapper/card-price-wrapper.tsx';
 import {getReviewsAverageRating} from '../../utils/get-reviews-average-rating.ts';
+import {useAppDispatch} from '../../store';
+import {setSelectedPoint} from '../../store/slice.ts';
 
 interface CardProps {
   offer: Offer;
-  onPointerOver: () => void;
   type: CardType;
 }
-
+// TODO: Напиши обертку для dispatch
 export default function Card(props: CardProps) {
+  const {offer, type} = props;
+  const dispatch = useAppDispatch();
+
   return (
-    <article onPointerOver={props.onPointerOver} className={`${props.type}__card place-card`}>
-      {props.offer.mark ? <Mark mark={props.offer.mark} className='place-card__mark'/> : null}
-      <CardImageWrapper cardType={props.type} imgSrc={props.offer.images[0]}/>
-      <div className={`${props.type === CardType.FavoritesPage ? 'favorites__card-info ' : ''}place-card__info`}>
-        <CardPriceWrapper offer={props.offer} isBookmarked={props.type === CardType.FavoritesPage}/>
-        <Rating wrapperClass={'place-card__rating'} starsClass={'place-card__stars'} averageRating={getReviewsAverageRating(props.offer.reviews)}/>
-        <CardName offer={props.offer}/>
-        <p className="place-card__type">{props.offer.type}</p>
+    <article onPointerOver={() => dispatch(setSelectedPoint(offer.location))} className={`${type}__card place-card`}>
+      {offer.mark ? <Mark mark={offer.mark} className='place-card__mark'/> : null}
+      <CardImageWrapper cardType={type} imgSrc={offer.images[0]}/>
+      <div className={`${type === CardType.FavoritesPage ? 'favorites__card-info ' : ''}place-card__info`}>
+        <CardPriceWrapper offer={offer} isBookmarked={type === CardType.FavoritesPage}/>
+        <Rating wrapperClass={'place-card__rating'} starsClass={'place-card__stars'} averageRating={getReviewsAverageRating(offer.reviews)}/>
+        <CardName offer={offer}/>
+        <p className="place-card__type">{offer.type}</p>
       </div>
     </article>
   );
