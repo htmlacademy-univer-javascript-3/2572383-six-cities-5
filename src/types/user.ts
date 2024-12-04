@@ -1,6 +1,5 @@
 export interface User {
-  firstname: string;
-  lastname: string;
-  imageSrc: string;
-  status: string;
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
 }

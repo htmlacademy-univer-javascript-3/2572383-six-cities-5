@@ -7,10 +7,26 @@ import FavoritesPage from '../../pages/favorites/favorites-page.tsx';
 import OfferPage from '../../pages/offer/offer-page.tsx';
 import NotFoundPage from '../../pages/404/notfound-page.tsx';
 import PrivateRoute from './private-route.tsx';
-import {Offer} from '../../types/offer.ts';
+import {useAppDispatch, useAppSelector} from '../../store';
+import {fetchOffers} from '../../store/api-actions.ts';
+import {useEffect} from 'react';
+import Spinner from '../spinner/spinner.tsx';
 
-export default function App(props: {offers: Offer[]}) {
+export default function App() {
   const isAuthorized = true;
+
+  const dispatch = useAppDispatch();
+  const offersLoading = useAppSelector((state) => state.offersLoading);
+
+  useEffect(() => {
+    if (offersLoading){
+      dispatch(fetchOffers());
+    }
+  }, [dispatch, offersLoading]);
+
+  if (offersLoading){
+    return <Spinner/>;
+  }
 
   return (
     <BrowserRouter>
@@ -21,7 +37,7 @@ export default function App(props: {offers: Offer[]}) {
           path={Path.FavoritePage}
           element={
             <PrivateRoute isAuthorized={isAuthorized}>
-              <FavoritesPage offers={props.offers}/>
+              <FavoritesPage />
             </PrivateRoute>
           }
         />

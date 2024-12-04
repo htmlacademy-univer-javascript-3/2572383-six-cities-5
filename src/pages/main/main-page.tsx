@@ -9,7 +9,7 @@ import {getSortedOffers} from '../../utils/sort-offers.ts';
 
 export default function MainPage() {
   const activeCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector(getSortedOffers).filter((offer) => offer.location.title === activeCity);
+  const offers = useAppSelector(getSortedOffers).filter((offer) => offer.city.name === activeCity.name);
 
   const points = offers.map((offer) => offer.location);
 
@@ -31,7 +31,7 @@ export default function MainPage() {
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{offers.length} places to stay in {activeCity}</b>
+                <b className="places__found">{offers.length} places to stay in {activeCity.name}</b>
                 <SortTypeDropSelector/>
                 <div className="cities__places-list places__list tabs__content">
                   <PlaceCardList offers={offers} cardType={CardType.MainPage}/>
