@@ -1,19 +1,16 @@
-import {User} from './user.ts';
-import {Review} from './review.ts';
-import {Feature} from './feature.ts';
-import {Point} from './point.ts';
+import {Location} from './location.ts';
+import {City} from './city.ts';
+import {OfferType} from '../enums/offer-type.ts';
 
 export interface Offer {
   id: string;
-  type: string;
-  images: string[];
-  name: string;
+  title: string;
+  type: OfferType;
   price: number;
-  location: Point;
-  features: Feature[];
-  insideItems: string[];
-  host: User;
-  descriptionParagraphs: string[];
-  reviews: Review[];
-  mark?: string;
+  city: City;
+  location: Location;
+  isFavorite: boolean;
+  isPremium: boolean;
+  rating: number;
+  previewImage?: string;
 }

@@ -1,6 +1,5 @@
 import {State} from '../types/state.ts';
 import {SortType} from '../enums/sort-type.ts';
-import {getReviewsAverageRating} from './get-reviews-average-rating.ts';
 
 export function getSortedOffers(state: State){
   const offers = [...state.offers];
@@ -14,7 +13,7 @@ export function getSortedOffers(state: State){
       return offers.sort((a, b) => a.price - b.price);
     case SortType.TopRatedFirst:
       return offers.sort(
-        (a, b) => getReviewsAverageRating(b.reviews) - getReviewsAverageRating(a.reviews)
+        (a, b) => b.rating - a.rating
       );
     default:
       return offers;

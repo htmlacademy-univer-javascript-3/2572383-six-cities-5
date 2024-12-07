@@ -1,3 +1,6 @@
-import {CITIES_LIST} from '../const.ts';
+import {Location} from './location.ts';
 
-export type City = typeof CITIES_LIST[number];
+export interface City {
+  name: string;
+  location: Location;
+}
