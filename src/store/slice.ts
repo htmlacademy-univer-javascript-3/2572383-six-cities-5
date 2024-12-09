@@ -6,8 +6,9 @@ import {Location} from '../types/location.ts';
 import {fetchExtendedOffer, fetchOffers} from './api-actions.ts';
 import {ExtendedOffer} from '../types/extended-offer.ts';
 import {ParisCity} from '../const.ts';
+import {AuthorizationStatus} from '../enums/authorization-status.ts';
 
-interface CityAndOffersState {
+interface SixCitiesState {
   city: City;
   offers: Offer[];
   offersDetails: Record<string, ExtendedOffer>;
@@ -15,22 +16,24 @@ interface CityAndOffersState {
   selectedPoint: Location | undefined;
   offerDetailsLoading: boolean;
   offersLoading: boolean;
+  authorizationStatus: AuthorizationStatus;
 }
 
-const cityAndOffersInitialState: CityAndOffersState = {
+const sixCitiesInitialState: SixCitiesState = {
   city: ParisCity,
   offers: [],
   offersDetails: {},
   sortType: SortType.Popular,
   selectedPoint: undefined,
   offerDetailsLoading: false,
-  offersLoading: true
+  offersLoading: true,
+  authorizationStatus: AuthorizationStatus.Unknown
 };
 
 
 const cityAndOffersSlice = createSlice({
   name: 'cityAndOffers',
-  initialState: cityAndOffersInitialState,
+  initialState: sixCitiesInitialState,
   reducers: {
     setCity: (state, action: PayloadAction<City>) => {
       state.city = action.payload;
