@@ -18,9 +18,9 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-export default function Map(props: { points: Location[] }) {
-  const {points} = props;
-  const selectedPoint = useAppSelector((state) => state.selectedPoint);
+export default function Map(props: { locations: Location[] }) {
+  const locations = props.locations;
+  const selectedLocation = useAppSelector((state) => state.selectedLocation);
 
   const activeCity = useAppSelector((state) => state.city);
 
@@ -34,7 +34,7 @@ export default function Map(props: { points: Location[] }) {
         lat: activeCity.location.latitude,
         lng: activeCity.location.longitude
       });
-      points.forEach((point) => {
+      locations.forEach((point) => {
         const marker = new Marker({
           lat: point.latitude,
           lng: point.longitude
@@ -42,7 +42,7 @@ export default function Map(props: { points: Location[] }) {
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point === selectedPoint
+            selectedLocation !== undefined && point === selectedLocation
               ? currentCustomIcon
               : defaultCustomIcon
           )
@@ -53,7 +53,7 @@ export default function Map(props: { points: Location[] }) {
         map.removeLayer(markerLayer);
       };
     }
-  }, [activeCity, map, points, selectedPoint]);
+  }, [activeCity, map, locations, selectedLocation]);
 
   return <div style={{ height: '100%' }} ref={mapRef}></div>;
 }

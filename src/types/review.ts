@@ -1,8 +1,9 @@
 import {User} from './user.ts';
 
 export interface Review {
+  id: string;
+  date: string;
   user: User;
-  text: string;
-  stars: number;
-  datetime: string;
+  comment: string;
+  rating: number;
 }

@@ -14,7 +14,7 @@ export default function OfferPageGallery(props: { images: string[] }) {
   return (
     <div className="offer__gallery-container container">
       <div className="offer__gallery">
-        {props.images.map((image) =>
+        {props.images.slice(0, 6).map((image) =>
           <OfferImageWrapper key={image} image={image} />)}
       </div>
     </div>

@@ -1,4 +1,7 @@
 import {ChangeEvent, FormEvent, useState} from 'react';
+import {useAppDispatch, useAppSelector} from '../../store';
+import {AuthorizationStatus} from '../../enums/authorization-status.ts';
+import {postReview} from '../../store/api-actions.ts';
 
 
 interface StarRatingInputProps {
@@ -8,13 +11,13 @@ interface StarRatingInputProps {
   checked: boolean;
 }
 
-const StarInputTitles: Record<number, string> = {
-  5: 'perfect',
-  4: 'good',
-  3: 'not bad',
-  2: 'badly',
-  1: 'terribly'
-};
+const StarInputTitles = new Map<number, string>([
+  [5, 'perfect'],
+  [4, 'good'],
+  [3, 'not bad'],
+  [2, 'badly'],
+  [1, 'terribly'],
+]);
 
 function StarRatingInput(props: StarRatingInputProps) {
   return (
@@ -41,9 +44,16 @@ function StarRatingInput(props: StarRatingInputProps) {
   );
 }
 
-export function OfferPageReviewForm() {
+export function OfferPageReviewForm(props: {offerId: string}) {
+  const isAuth = useAppSelector((state) => state.authorizationStatus) === AuthorizationStatus.Auth;
+  const dispatch = useAppDispatch();
+
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
+
+  if (!isAuth){
+    return null;
+  }
 
   const handleRatingChange = (value: string) => {
     setRating(Number(value));
@@ -55,6 +65,7 @@ export function OfferPageReviewForm() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    dispatch(postReview({offerId: props.offerId, comment: review, rating: rating}));
   };
 
   return (
@@ -63,13 +74,13 @@ export function OfferPageReviewForm() {
         Your review
       </label>
       <div className="reviews__rating-form form__rating">
-        {Object.entries(StarInputTitles).map(([value, title]) => (
+        {Array.from(StarInputTitles.entries()).map(([value, title]) => (
           <StarRatingInput
             key={value}
-            value={Number(value)}
+            value={value}
             title={title}
             onChange={(event) => handleRatingChange(event.target.value)}
-            checked={rating === Number(value)}
+            checked={rating === value}
           />
         ))}
       </div>

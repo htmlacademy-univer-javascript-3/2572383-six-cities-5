@@ -4,6 +4,8 @@ export const URL_PIN_DEFAULT = 'img/pin.svg';
 
 export const URL_PIN_ACTIVE = 'img/pin-active.svg';
 
+export const TIMEOUT_SHOW_ERROR = 3000;
+
 export const AmsterdamCity: City = {
   location: {
     latitude: 52.3909553943508,

@@ -20,7 +20,7 @@ export function SortTypeDropSelector() {
       <span
         className="places__sorting-type"
         tabIndex={0}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen((prev) => !prev)}
       >
         {activeSortType}
         <svg className="places__sorting-arrow" width={7} height={4}>

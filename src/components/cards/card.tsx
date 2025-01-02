@@ -12,7 +12,7 @@ interface CardProps {
   offer: Offer;
   type: CardType;
 }
-// TODO: Напиши обертку для dispatch
+
 export default function Card(props: CardProps) {
   const {offer, type} = props;
   const dispatch = useAppDispatch();
@@ -22,8 +22,8 @@ export default function Card(props: CardProps) {
       {offer.isPremium ? <PremiumMark className='place-card__mark'/> : null}
       <CardImageWrapper cardType={type} imgSrc={offer.previewImage}/>
       <div className={`${type === CardType.FavoritesPage ? 'favorites__card-info ' : ''}place-card__info`}>
-        <CardPriceWrapper offer={offer} isBookmarked={type === CardType.FavoritesPage}/>
-        <Rating wrapperClass={'place-card__rating'} starsClass={'place-card__stars'} averageRating={offer.rating}/>
+        <CardPriceWrapper offer={offer}/>
+        <Rating wrapperClass={'place-card__rating'} starsClass={'place-card__stars'} averageRating={offer.rating} roundToNearestInteger/>
         <CardName offer={offer}/>
         <p className="place-card__type">{offer.type}</p>
       </div>
