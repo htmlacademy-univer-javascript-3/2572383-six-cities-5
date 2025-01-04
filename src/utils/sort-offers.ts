@@ -1,21 +1,21 @@
-import {State} from '../types/state.ts';
 import {SortType} from '../enums/sort-type.ts';
+import {Offer} from '../types/offer.ts';
 
-export function getSortedOffers(state: State){
-  const offers = [...state.offers];
+export function getSortedOffers(offers: Offer[], sortType: SortType){
+  const offersCopy = [...offers];
 
-  switch (state.sortType) {
+  switch (sortType) {
     case SortType.Popular:
-      return offers;
+      return offersCopy;
     case SortType.HighToLow:
-      return offers.sort((a, b) => b.price - a.price);
+      return offersCopy.sort((a, b) => b.price - a.price);
     case SortType.LowToHigh:
-      return offers.sort((a, b) => a.price - b.price);
+      return offersCopy.sort((a, b) => a.price - b.price);
     case SortType.TopRatedFirst:
-      return offers.sort(
+      return offersCopy.sort(
         (a, b) => b.rating - a.rating
       );
     default:
-      return offers;
+      return offersCopy;
   }
 }

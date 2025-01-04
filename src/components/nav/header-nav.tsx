@@ -1,24 +1,20 @@
+import {useAppSelector} from '../../store';
+import {SignInButton} from '../sign-in-button/sign-in-button.tsx';
+import {SignOutButton} from '../sign-out-button/sign-out-button.tsx';
+import {selectIsAuthorized} from '../../store/user/user-selectors.ts';
+import {LoggedUser} from '../logged-user/logged-user.tsx';
+
+
 export function HeaderNav() {
+  const isAuthorized = useAppSelector(selectIsAuthorized);
+
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
         <li className="header__nav-item user">
-          <a
-            className="header__nav-link header__nav-link--profile"
-            href="#"
-          >
-            <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-            <span className="header__user-name user__name">
-                    Oliver.conner@gmail.com
-            </span>
-            <span className="header__favorite-count">3</span>
-          </a>
+          {isAuthorized ? <LoggedUser/> : <SignInButton/>}
         </li>
-        <li className="header__nav-item">
-          <a className="header__nav-link" href="#">
-            <span className="header__signout">Sign out</span>
-          </a>
-        </li>
+        {isAuthorized ? <SignOutButton/> : null}
       </ul>
     </nav>
   );

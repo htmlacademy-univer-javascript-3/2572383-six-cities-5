@@ -1,6 +1,7 @@
 import {Offer} from '../../../types/offer.ts';
+import BookmarkButton from '../../bookmark-button/bookmark-button.tsx';
 
-export function CardPriceWrapper(props: { offer: Offer; isBookmarked: boolean }) {
+export function CardPriceWrapper(props: { offer: Offer }) {
   return (
     <div className="place-card__price-wrapper">
       <div className="place-card__price">
@@ -9,19 +10,13 @@ export function CardPriceWrapper(props: { offer: Offer; isBookmarked: boolean })
                         /&nbsp;night
         </span>
       </div>
-      <button
-        className={`place-card__bookmark-button ${props.isBookmarked ? 'place-card__bookmark-button--active ' : ''}button`}
-        type="button"
-      >
-        <svg
-          className="place-card__bookmark-icon"
-          width={18}
-          height={19}
-        >
-          <use xlinkHref="#icon-bookmark"/>
-        </svg>
-        <span className="visually-hidden">{props.isBookmarked ? 'In bookmarks' : 'To bookmarks'}</span>
-      </button>
+      <BookmarkButton
+        offer={props.offer}
+        className={'place-card__bookmark-button button'}
+        activeClass={'place-card__bookmark-button--active'}
+        iconClass={'place-card__bookmark-icon'}
+        width={18} height={19}
+      />
     </div>
   );
 }

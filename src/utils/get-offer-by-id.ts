@@ -2,8 +2,8 @@ import {State} from '../types/state.ts';
 
 export function getOfferById(state: State, id?: string) {
   if (!id) {
-    return undefined;
+    return null;
   }
 
-  return state.offersDetails[id];
+  return state.offers.offersDetails[id];
 }

@@ -1,5 +1,5 @@
 import {useRef, useEffect} from 'react';
-import {Icon, Marker, layerGroup} from 'leaflet';
+import {Icon, Marker, layerGroup, LatLngBounds} from 'leaflet';
 import useMap from '../../hooks/use-map';
 import {URL_PIN_DEFAULT, URL_PIN_ACTIVE} from '../../const';
 import 'leaflet/dist/leaflet.css';
@@ -18,23 +18,36 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-export default function Map(props: { points: Location[] }) {
-  const {points} = props;
-  const selectedPoint = useAppSelector((state) => state.selectedPoint);
-
-  const activeCity = useAppSelector((state) => state.city);
+export default function Map(props: { locations: Location[]; forcedActiveLocation: Location | null }) {
+  const locations = props.locations;
+  const activeLocation = props.forcedActiveLocation;
+  const selectedLocation = useAppSelector((state) => state.offers.selectedLocation) || props.forcedActiveLocation;
 
   const mapRef = useRef(null);
-  const map = useMap(mapRef, activeCity);
+  const map = useMap(mapRef);
 
   useEffect(() => {
-    if (map && activeCity) {
+    if (map) {
       const markerLayer = layerGroup().addTo(map);
-      map.setView({
-        lat: activeCity.location.latitude,
-        lng: activeCity.location.longitude
-      });
-      points.forEach((point) => {
+
+      const bounds = new LatLngBounds(
+        locations.map((point) => [point.latitude, point.longitude])
+      );
+
+      if (activeLocation){
+        const marker = new Marker({
+          lat: activeLocation.latitude,
+          lng: activeLocation.longitude
+        });
+
+        marker
+          .setIcon(
+            currentCustomIcon
+          )
+          .addTo(markerLayer);
+      }
+
+      locations.forEach((point) => {
         const marker = new Marker({
           lat: point.latitude,
           lng: point.longitude
@@ -42,18 +55,23 @@ export default function Map(props: { points: Location[] }) {
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point === selectedPoint
+            selectedLocation !== undefined && point === selectedLocation && !activeLocation
               ? currentCustomIcon
               : defaultCustomIcon
           )
           .addTo(markerLayer);
       });
 
+      if (locations.length > 0) {
+        map.fitBounds(bounds, { padding: [150, 150] });
+      }
+
       return () => {
         map.removeLayer(markerLayer);
       };
     }
-  }, [activeCity, map, points, selectedPoint]);
+  }, [map, locations, selectedLocation, activeLocation]);
 
-  return <div style={{ height: '100%' }} ref={mapRef}></div>;
+
+  return <div style={{ height: '100%' }} ref={mapRef} data-testid="mapContainer"></div>;
 }
