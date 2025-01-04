@@ -5,7 +5,7 @@ export function OfferPageHost(props: { offerHost: User }) {
 
   return (
     <div className="offer__host-user user">
-      <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+      <div className={`offer__avatar-wrapper user__avatar-wrapper${host.isPro ? ' offer__avatar-wrapper--pro' : ''}`}>
         <img
           className="offer__avatar user__avatar"
           src={host.avatarUrl}

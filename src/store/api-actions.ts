@@ -7,10 +7,10 @@ import {AuthData} from '../types/auth-data.ts';
 import {AppDispatch} from '../types/state.ts';
 import {dropToken, saveToken} from '../services/token.ts';
 import {UserData} from '../types/user-data.ts';
-import {clearUserData, setAuthorizationStatus, setErrorMessage, setUserData} from './slice.ts';
 import {AuthorizationStatus} from '../enums/authorization-status.ts';
 import {TIMEOUT_SHOW_ERROR} from '../const.ts';
 import {Review} from '../types/review.ts';
+import {clearUserData, setAuthorizationStatus, setErrorMessage, setUserData} from './user/user-slice.ts';
 
 export const fetchOffers = createAsyncThunk<Offer[], undefined, {
   extra: AxiosInstance;
@@ -52,7 +52,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   extra: AxiosInstance;
 }>(
   'login',
-  async ({login: email, password}, {dispatch, extra: api}) => {
+  async ({email: email, password}, {dispatch, extra: api}) => {
     const {data} = await api.post<UserData>(ApiRoute.Login, {email, password});
     saveToken(data.token);
     dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));

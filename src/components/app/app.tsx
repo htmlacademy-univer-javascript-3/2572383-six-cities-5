@@ -7,22 +7,17 @@ import FavoritesPage from '../../pages/favorites/favorites-page.tsx';
 import OfferPage from '../../pages/offer/offer-page.tsx';
 import NotFoundPage from '../../pages/not-found-page/not-found-page.tsx';
 import PrivateRoute from './private-route.tsx';
-import {store, useAppSelector} from '../../store';
-import {checkAuthAction} from '../../store/api-actions.ts';
-import Spinner from '../spinner/spinner.tsx';
+import {useAppDispatch} from '../../store';
+import { fetchOffers} from '../../store/api-actions.ts';
 import ErrorMessage from '../error-message/error-message.tsx';
 import {useEffect} from 'react';
 
 export default function App() {
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    store.dispatch(checkAuthAction());
-  }, []);
-
-  const offersLoading = useAppSelector((state) => state.offersLoading);
-
-  if (offersLoading){
-    return <Spinner/>;
-  }
+    dispatch(fetchOffers());
+  }, [dispatch]);
 
   return (
     <>

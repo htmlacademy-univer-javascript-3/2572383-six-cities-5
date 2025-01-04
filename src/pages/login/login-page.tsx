@@ -1,30 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../layouts/header/header';
-import {useAppDispatch, useAppSelector} from '../../store';
-import {AuthData} from '../../types/auth-data.ts';
-import {loginAction} from '../../store/api-actions.ts';
-import {Link, Navigate} from 'react-router-dom';
-import {Path} from '../../enums/path.ts';
-import {AuthorizationStatus} from '../../enums/authorization-status.ts';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { AuthData } from '../../types/auth-data.ts';
+import { loginAction } from '../../store/api-actions.ts';
+import { Link, useNavigate } from 'react-router-dom';
+import { Path } from '../../enums/path.ts';
+import { selectIsAuthorized } from '../../store/user/user-selectors.ts';
+import { getRandomCity } from '../../utils/getRandomCity.ts';
+import { setCity } from '../../store/city/city-slice.ts';
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
-  const currentCity = useAppSelector((state) => state.city);
-  const isAuth = useAppSelector((state) => state.authorizationStatus) === AuthorizationStatus.Auth;
-  const [authData, setAuthData] = useState<AuthData>({ login: '', password: '' });
+  const isAuth = useAppSelector(selectIsAuthorized);
+  const navigate = useNavigate();
+  const [authData, setAuthData] = useState<AuthData>({ email: '', password: '' });
+  const [randomCity] = useState(getRandomCity);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
 
-  if (isAuth) {
-    return <Navigate to={Path.MainPage}/>;
-  }
+  useEffect(() => {
+    if (isAuth) {
+      navigate(Path.MainPage);
+    }
+  }, [isAuth, navigate]);
+
+  const validatePassword = (password: string) => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{2,}$/;
+    setIsPasswordValid(passwordRegex.test(password));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setAuthData((prevState) => ({ ...prevState, [name]: value }));
+
+    if (name === 'password') {
+      validatePassword(value);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(loginAction(authData));
+    if (isPasswordValid) {
+      dispatch(loginAction(authData));
+    }
   };
 
   return (
@@ -46,11 +63,11 @@ export default function LoginPage() {
                   <input
                     className="login__input form__input"
                     type="email"
-                    name="login"
+                    name="email"
                     id="email"
                     placeholder="Email"
                     required
-                    value={authData.login}
+                    value={authData.email}
                     onChange={handleChange}
                   />
                 </div>
@@ -66,8 +83,17 @@ export default function LoginPage() {
                     value={authData.password}
                     onChange={handleChange}
                   />
+                  {!isPasswordValid && authData.password.length > 0 && (
+                    <p className="form__error">
+                      Password must contain at least one letter and one number.
+                    </p>
+                  )}
                 </div>
-                <button className="login__submit form__submit button" type="submit">
+                <button
+                  className="login__submit form__submit button"
+                  type="submit"
+                  disabled={!isPasswordValid}
+                >
                   Sign in
                 </button>
               </form>
@@ -75,7 +101,14 @@ export default function LoginPage() {
             <section className="locations locations--login locations--current">
               <div className="locations__item">
                 <Link to={Path.MainPage} className="locations__item-link">
-                  <span>{currentCity.name}</span>
+                  <span
+                    onClick={() => {
+                      dispatch(setCity(randomCity));
+                      navigate(Path.MainPage);
+                    }}
+                  >
+                    {randomCity.name}
+                  </span>
                 </Link>
               </div>
             </section>

@@ -18,33 +18,24 @@ import Map from '../../components/map/map.tsx';
 import {OfferPageNearPlaces} from './offer-page-near-places.tsx';
 import {OfferPageReviewForm} from './offer-page-review-form.tsx';
 import {OfferPageReviewList} from './offer-page-review-list.tsx';
+import BookmarkButton from '../../components/bookmark-button/bookmark-button.tsx';
 
 export default function OfferPage() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const offer = useAppSelector((state) => getOfferById(state, id));
-  const extendedLoading = useAppSelector((state) => state.offerDetailsLoading);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
-  const nearbyOffersLoading = useAppSelector((state) => state.nearbyOffersLoading);
+  const extendedLoading = useAppSelector((state) => state.offers.offerDetailsLoading);
+  const nearbyOffers = useAppSelector((state) => state.offers.nearbyOffers);
+  const nearbyOffersLoading = useAppSelector((state) => state.offers.nearbyOffersLoading);
 
   useEffect(() => {
     if (!id){
       return;
     }
-
-    if (!offer) {
-      dispatch(fetchExtendedOffer(id));
-    }
-  }, [dispatch, id, offer]);
-
-  useEffect(() => {
-    if (!id){
-      return;
-    }
-
+    dispatch(fetchExtendedOffer(id));
     dispatch(fetchNearbyOffers(id));
 
-  }, []);
+  }, [dispatch, id]);
 
   if (extendedLoading || nearbyOffersLoading) {
     return <Spinner/>;
@@ -73,14 +64,16 @@ export default function OfferPage() {
                   <h1 className="offer__name">
                     {offer.title}
                   </h1>
-                  <button className="offer__bookmark-button button" type="button">
-                    <svg className="offer__bookmark-icon" width={31} height={33}>
-                      <use xlinkHref="#icon-bookmark"/>
-                    </svg>
-                    <span className="visually-hidden">To bookmarks</span>
-                  </button>
+                  <BookmarkButton
+                    offer={offer}
+                    className={'offer__bookmark-button button'}
+                    activeClass={'offer__bookmark-button--active'}
+                    iconClass={'offer__bookmark-icon'}
+                    width={31}
+                    height={33}
+                  />
                 </div>
-                <Rating wrapperClass={'offer__rating'} starsClass={'offer__stars'} averageRating={offer.rating} roundToNearestInteger={false}>
+                <Rating wrapperClass={'offer__rating'} starsClass={'offer__stars'} averageRating={offer.rating} roundToNearestInteger>
                   <span
                     className="offer__rating-value rating__value"
                   >{offer.rating}
@@ -101,11 +94,11 @@ export default function OfferPage() {
               </div>
             </div>
             <section className="offer__map map">
-              <Map locations={nearbyOffers.slice(0,3).map((place) => place.location)}/>
+              <Map locations={nearbyOffers.slice(0,3).map((place) => place.location)} forcedActiveLocation={offer.location}/>
             </section>
           </section>
           <div className="container">
-            <OfferPageNearPlaces offers={nearbyOffers.slice(0, 3)}/>
+            <OfferPageNearPlaces offers={nearbyOffers.slice(0,3)}/>
           </div>
         </main>
       </div>

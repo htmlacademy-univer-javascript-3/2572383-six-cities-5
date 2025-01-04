@@ -3,6 +3,7 @@ import Rating from '../../components/rating/rating.tsx';
 import {useAppDispatch, useAppSelector} from '../../store';
 import {useEffect} from 'react';
 import {fetchReviews} from '../../store/api-actions.ts';
+import {sortReviewsByDate} from '../../utils/getSortedReviewByDate.ts';
 
 function ReviewDate(props: { date: string }) {
   const formattedDate = new Date(props.date).toLocaleString('en-US', {year: 'numeric', month: 'long'});
@@ -42,12 +43,12 @@ function ReviewItem(props: { review: Review }) {
 
 export function OfferPageReviewList(props: { id: string }) {
   const dispatch = useAppDispatch();
-  const reviews = useAppSelector((state) => state.reviews);
-  const reviewsLoading = useAppSelector((state) => state.reviewsLoading);
+  const reviews = useAppSelector((state) => sortReviewsByDate(state.offers.reviews));
+  const reviewsLoading = useAppSelector((state) => state.offers.reviewsLoading);
 
   useEffect(() => {
     dispatch(fetchReviews(props.id));
-  }, []);
+  }, [dispatch, props.id]);
 
   if (reviewsLoading){
     return null;
@@ -59,7 +60,7 @@ export function OfferPageReviewList(props: { id: string }) {
         Reviews · <span className="reviews__amount">{reviews.length}</span>
       </h2>
       <ul className="reviews__list">
-        {reviews.map((review: Review) => <ReviewItem key={review.comment} review={review}/>)}
+        {reviews.slice(0, 10).map((review: Review) => <ReviewItem key={review.id} review={review}/>)}
       </ul>
     </>
   );

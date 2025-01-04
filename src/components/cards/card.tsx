@@ -6,7 +6,8 @@ import {CardName} from './name/card-name.tsx';
 import {PremiumMark} from '../mark/premiumMark.tsx';
 import {CardPriceWrapper} from './price-wrapper/card-price-wrapper.tsx';
 import {useAppDispatch} from '../../store';
-import {setSelectedPoint} from '../../store/slice.ts';
+import {setSelectedPoint} from '../../store/offers/offers-slice.ts';
+import capitalize from '../../utils/capitalize.ts';
 
 interface CardProps {
   offer: Offer;
@@ -18,17 +19,15 @@ export default function Card(props: CardProps) {
   const dispatch = useAppDispatch();
 
   return (
-    <article onPointerOver={() => dispatch(setSelectedPoint(offer.location))} className={`${type}__card place-card`}>
+    <article onMouseOver={() => dispatch(setSelectedPoint(offer.location))} onMouseLeave={() => dispatch(setSelectedPoint(null))} className={`${type}__card place-card`}>
       {offer.isPremium ? <PremiumMark className='place-card__mark'/> : null}
       <CardImageWrapper cardType={type} imgSrc={offer.previewImage}/>
       <div className={`${type === CardType.FavoritesPage ? 'favorites__card-info ' : ''}place-card__info`}>
         <CardPriceWrapper offer={offer}/>
         <Rating wrapperClass={'place-card__rating'} starsClass={'place-card__stars'} averageRating={offer.rating} roundToNearestInteger/>
         <CardName offer={offer}/>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{capitalize(offer.type)}</p>
       </div>
     </article>
   );
 }
-
-

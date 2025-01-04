@@ -1,4 +1,5 @@
 import {ExtendedOffer} from '../../types/extended-offer.ts';
+import capitalize from '../../utils/capitalize.ts';
 
 
 export function OfferPageFeatures(props: { offer: ExtendedOffer }) {
@@ -7,7 +8,7 @@ export function OfferPageFeatures(props: { offer: ExtendedOffer }) {
   return (
     <ul className="offer__features">
       <li className='offer__feature offer__feature--entire'>
-        {offer.type.charAt(0).toUpperCase() + offer.type.slice(1)}
+        {capitalize(offer.type)}
       </li>
       <li className='offer__feature offer__feature--bedrooms'>
         {offer.bedrooms} Bedrooms

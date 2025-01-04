@@ -1,13 +1,13 @@
 import {City} from '../../types/city.ts';
 import {useAppDispatch, useAppSelector} from '../../store';
-import {setCity} from '../../store/slice.ts';
 import {CitiesList} from '../../const.ts';
+import {setCity} from '../../store/city/city-slice.ts';
 
 
 export function LocationsContainer() {
   const cities = CitiesList;
   const dispatch = useAppDispatch();
-  const activeCity = useAppSelector((state) => state.city);
+  const activeCity = useAppSelector((state) => state.city.city);
 
   const handleCityClick = (city: City) => {
     dispatch(setCity(city));

@@ -1,7 +1,7 @@
-import {ChangeEvent, FormEvent, useState} from 'react';
+import {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../store';
-import {AuthorizationStatus} from '../../enums/authorization-status.ts';
 import {postReview} from '../../store/api-actions.ts';
+import {selectIsAuthorized} from '../../store/user/user-selectors.ts';
 
 
 interface StarRatingInputProps {
@@ -9,6 +9,7 @@ interface StarRatingInputProps {
   title: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   checked: boolean;
+  disabled: boolean;
 }
 
 const StarInputTitles = new Map<number, string>([
@@ -30,6 +31,7 @@ function StarRatingInput(props: StarRatingInputProps) {
         type="radio"
         onChange={props.onChange}
         checked={props.checked}
+        disabled={props.disabled}
       />
       <label
         htmlFor={`${props.value}-stars`}
@@ -45,13 +47,22 @@ function StarRatingInput(props: StarRatingInputProps) {
 }
 
 export function OfferPageReviewForm(props: {offerId: string}) {
-  const isAuth = useAppSelector((state) => state.authorizationStatus) === AuthorizationStatus.Auth;
+  const isAuthorized = useAppSelector(selectIsAuthorized);
   const dispatch = useAppDispatch();
+  const reviewUploading = useAppSelector((state) => state.offers.reviewUploading);
+  const reviewSuccess = useAppSelector((state) => state.offers.reviewSuccess);
 
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
 
-  if (!isAuth){
+  useEffect(() => {
+    if (reviewSuccess) {
+      setRating(0);
+      setReview('');
+    }
+  }, [reviewSuccess, dispatch]);
+
+  if (!isAuthorized){
     return null;
   }
 
@@ -81,6 +92,7 @@ export function OfferPageReviewForm(props: {offerId: string}) {
             title={title}
             onChange={(event) => handleRatingChange(event.target.value)}
             checked={rating === value}
+            disabled={reviewUploading}
           />
         ))}
       </div>
@@ -91,6 +103,7 @@ export function OfferPageReviewForm(props: {offerId: string}) {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={review}
         onChange={(event) => handleReviewChange(event.target.value)}
+        disabled={reviewUploading}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
@@ -101,7 +114,7 @@ export function OfferPageReviewForm(props: {offerId: string}) {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={rating === 0 || review.length < 50}
+          disabled={rating === 0 || review.length < 50 || review.length > 300 || reviewUploading}
         >
           Submit
         </button>

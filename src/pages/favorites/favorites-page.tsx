@@ -1,4 +1,4 @@
-import PlaceCardList from '../../components/cards_list/place-card-list.tsx';
+import CardList from '../../components/cards-list/card-list.tsx';
 import {CardType} from '../../components/cards/card-type.ts';
 import HeaderWithNav from '../layouts/header/header-with-nav.tsx';
 import {useAppDispatch, useAppSelector} from '../../store';
@@ -46,7 +46,7 @@ function FavoritesListing(props: {favoriteOffers: Offer[]}) {
                   </div>
                 </div>
                 <div className="favorites__places">
-                  <PlaceCardList offers={cityFavoriteOffers} cardType={CardType.FavoritesPage}/>
+                  <CardList offers={cityFavoriteOffers} cardType={CardType.FavoritesPage}/>
                 </div>
               </li>
             );
@@ -59,12 +59,14 @@ function FavoritesListing(props: {favoriteOffers: Offer[]}) {
 }
 
 export default function FavoritesPage() {
-  const favoriteOffers = useAppSelector((state) => state.favorites);
+  const favoriteOffers = useAppSelector((state) => state.offers.favorites);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchFavorites());
-  }, []);
+  }, [dispatch]);
+
+  const empty = favoriteOffers.length === 0;
 
   return (
     <>
@@ -73,10 +75,12 @@ export default function FavoritesPage() {
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <title>6 cities: favorites</title>
       <link rel="stylesheet" href="css/main.css"/>
-      <div className="page">
+      <div className={empty ? 'page page--favorites-empty' : 'page'}>
         <HeaderWithNav/>
-        <main className={`page__main page__main--favorites${favoriteOffers.length === 0 ? ' page__main--favorites-empty' : ''}`}>
-          {favoriteOffers.length === 0 ? <EmptyFavoritesListing/> : <FavoritesListing favoriteOffers={favoriteOffers}/>};
+        <main
+          className={`page__main page__main--favorites${favoriteOffers.length === 0 ? ' page__main--favorites-empty' : ''}`}
+        >
+          {empty ? <EmptyFavoritesListing/> : <FavoritesListing favoriteOffers={favoriteOffers}/>};
         </main>
         <footer className="footer container">
           <a className="footer__logo-link" href="main.html">

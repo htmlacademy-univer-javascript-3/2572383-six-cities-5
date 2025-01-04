@@ -1,5 +1,5 @@
 import {useRef, useEffect} from 'react';
-import {Icon, Marker, layerGroup} from 'leaflet';
+import {Icon, Marker, layerGroup, LatLngBounds} from 'leaflet';
 import useMap from '../../hooks/use-map';
 import {URL_PIN_DEFAULT, URL_PIN_ACTIVE} from '../../const';
 import 'leaflet/dist/leaflet.css';
@@ -18,22 +18,35 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-export default function Map(props: { locations: Location[] }) {
+export default function Map(props: { locations: Location[]; forcedActiveLocation: Location | null }) {
   const locations = props.locations;
-  const selectedLocation = useAppSelector((state) => state.selectedLocation);
-
-  const activeCity = useAppSelector((state) => state.city);
+  const activeLocation = props.forcedActiveLocation;
+  const selectedLocation = useAppSelector((state) => state.offers.selectedLocation) || props.forcedActiveLocation;
 
   const mapRef = useRef(null);
-  const map = useMap(mapRef, activeCity);
+  const map = useMap(mapRef);
 
   useEffect(() => {
-    if (map && activeCity) {
+    if (map) {
       const markerLayer = layerGroup().addTo(map);
-      map.setView({
-        lat: activeCity.location.latitude,
-        lng: activeCity.location.longitude
-      });
+
+      const bounds = new LatLngBounds(
+        locations.map((point) => [point.latitude, point.longitude])
+      );
+
+      if (activeLocation){
+        const marker = new Marker({
+          lat: activeLocation.latitude,
+          lng: activeLocation.longitude
+        });
+
+        marker
+          .setIcon(
+            currentCustomIcon
+          )
+          .addTo(markerLayer);
+      }
+
       locations.forEach((point) => {
         const marker = new Marker({
           lat: point.latitude,
@@ -42,18 +55,23 @@ export default function Map(props: { locations: Location[] }) {
 
         marker
           .setIcon(
-            selectedLocation !== undefined && point === selectedLocation
+            selectedLocation !== undefined && point === selectedLocation && !activeLocation
               ? currentCustomIcon
               : defaultCustomIcon
           )
           .addTo(markerLayer);
       });
 
+      if (locations.length > 0) {
+        map.fitBounds(bounds, { padding: [150, 150] });
+      }
+
       return () => {
         map.removeLayer(markerLayer);
       };
     }
-  }, [activeCity, map, locations, selectedLocation]);
+  }, [map, locations, selectedLocation, activeLocation]);
 
-  return <div style={{ height: '100%' }} ref={mapRef}></div>;
+
+  return <div style={{ height: '100%' }} ref={mapRef} data-testid="mapContainer"></div>;
 }
