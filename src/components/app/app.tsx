@@ -8,7 +8,7 @@ import OfferPage from '../../pages/offer/offer-page.tsx';
 import NotFoundPage from '../../pages/not-found-page/not-found-page.tsx';
 import PrivateRoute from './private-route.tsx';
 import {useAppDispatch} from '../../store';
-import { fetchOffers} from '../../store/api-actions.ts';
+import {fetchOffers} from '../../store/api-actions.ts';
 import ErrorMessage from '../error-message/error-message.tsx';
 import {useEffect} from 'react';
 
